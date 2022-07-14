@@ -1,0 +1,134 @@
+  <?php
+    include 'header.php';
+    include 'sidebar.php';
+    // include '../controller/model.php';
+    $data = new Model();
+    ?>
+  <div class="main-content">
+      <section class="section">
+          <div class="section-header">
+              <h1>MEMBER / USER</h1>
+              <!-- <div class="section-header-breadcrumb">
+                <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                <div class="breadcrumb-item"><a href="#">Bootstrap Components</a></div>
+                <div class="breadcrumb-item">Table</div>
+            </div> -->
+          </div>
+          <div class="section-body">
+              <div>
+                  <div class="col-12 col-md-6 col-lg-12">
+                      <div class="card">
+                          <div class="card-header" style="background: dimgray;">
+                              <div style="text-align: center;">
+                                  <h4 style="color: ghostwhite;">Add</h4>
+                              </div>
+                              <div class="" style="display: flex-end;justify-content:end;">
+                                  <a href="#addEmployeeModal" data-toggle="modal"><i class="fas fa-plus btn btn-outline-primary fas-5px"></i></a>
+                              </div>
+                          </div>
+                          <div class="card-body">
+                              <?php if ($data->select_user()->num_rows == null) : ?>
+                                  <h1>DATA MEMBER EMPTY</h1>
+                              <?php else : ?>
+                                  <table class="table table-dark">
+                                      <thead class="thead thead-danger">
+                                          <tr>
+                                              <th>NO</th>
+                                              <th>NAMA</th>
+                                              <th>ALAMAT</th>
+                                              <th>JENIS KELAMIN</th>
+                                              <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACTION</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <?php
+                                            $no = 1;
+                                            ?>
+                                          <?php foreach ($data->select_user() as $value) : ?>
+                                              <tr>
+                                                  <td><?= $no++ ?></td>
+                                                  <td><?= strtoupper($value['nama']); ?></td>
+                                                  <td><?= strtoupper($value['alamat']); ?></td>
+                                                  <td><?= strtoupper($value['jenisKelamain']); ?></td>
+                                                  <td>
+                                                      <a href="#"><i class="fas fa-edit btn btn-outline-warning"></i></a>
+                                                      <a href="#deleteEmployeeModal<?= $value['id'] ?>" data-toggle="modal"><i class="far fa-trash-alt btn btn-outline-danger"></i></a>
+                                                  </td>
+                                              <?php endforeach; ?>
+                                              </tr>
+                                      </tbody>
+                                  </table>
+                              <?php endif; ?>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  </div>
+  </section>
+  <div id="addEmployeeModal" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 class="modal-title">ADD MEMBER</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <form action="./insertUser.php" method="post">
+                  <div class="modal-body">
+                      <div class="form-group">
+                          <label>NAMA</label>
+                          <input type="text" name="nama" class="form-control" autocomplete="off" required>
+                      </div>
+                      <div class="form-group">
+                          <label>ALAMAT</label>
+                          <textarea class="form-control" name="alamat" id="exampleFormControlTextarea1" rows="5"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label>JENIS KELAMIN</label>
+                          <select class="form-control" name="gender">
+                              <option value="LAKI-LAKI">Laki-laki</option>
+                              <option value="PEREMPUAN">Perempuan</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label>Email</label>
+                          <input type="email" name="username" class="form-control" autocomplete="off" required>
+                      </div>
+                      <div class="form-group">
+                          <label>PASSWORD</label>
+                          <input type="password" name="pass" class="form-control" autocomplete="off" required>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                      <input type="submit" name="" class="btn btn-success" value="Add">
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  <?php foreach ($data->select_user() as $value) : ?>
+      <div id="deleteEmployeeModal<?= $value['id'] ?>" class="modal fade">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <form action="">
+                      <div class="modal-header">
+                          <h4 class="modal-title">Delete Member/User</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                          <p>Apakah anda yakin ingin menghapus ?</p>
+                          <p class="text-warning"><small><?= strtoupper($value['nama']); ?>.</small></p>
+                      </div>
+                      <div class="modal-footer">
+                          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                          <a href="deleteUser.php?id=<?= $value['id'] ?>" class="btn btn-danger">Hapus</a>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  <?php endforeach; ?>
+  <?php
+    include 'footer.php';
+    ?>
